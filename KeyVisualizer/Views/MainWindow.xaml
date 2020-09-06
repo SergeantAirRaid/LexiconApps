@@ -1,0 +1,23 @@
+﻿<Window x:Class="KeyVisualizer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KeyVisualizer"
+        xmlns:tools="clr-namespace:WPFTools;assembly=WPFTools"
+        mc:Ignorable="d"
+        Title="Key Visualizer" 
+        WindowStartupLocation="CenterScreen"
+        Height="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9' }" 
+        Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.95' }" 
+        Background="LightGray" >
+    <Window.DataContext>
+        <local:MainWindowVM />
+    </Window.DataContext>
+    <Grid>
+        <local:Fretboard VerticalAlignment="Top" Margin="30,30,30,0" 
+                         Height="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.45' }" 
+
+            ></local:Fretboard>
+    </Grid>
+</Window>
