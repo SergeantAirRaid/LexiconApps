@@ -1,0 +1,5 @@
+
+*.baml
+*.cache
+*.lref
+*.suo
