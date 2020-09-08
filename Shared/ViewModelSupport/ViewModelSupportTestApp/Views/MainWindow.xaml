@@ -1,0 +1,22 @@
+﻿<Window x:Class="ViewModelSupportTestApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ViewModelSupportTestApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <local:MainWindowVM />
+    </Window.DataContext>
+    <Grid>
+        <TextBox Text="{Binding TextBoxText}" HorizontalAlignment="Left" Height="23" Margin="28,18,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <Button  Command="{Binding Enter}" Content="Enter" HorizontalAlignment="Left" Margin="173,21,0,0" VerticalAlignment="Top" Width="75"  />
+        <Label   Content="{Binding LabelText}" HorizontalAlignment="Left" Margin="67,69,0,0" VerticalAlignment="Top" Width="144" Height="41"/>
+        <ListBox ItemsSource="{Binding History}"  HorizontalAlignment="Left" Height="335" Margin="303,61,0,0" VerticalAlignment="Top" Width="134"/>
+        <Label   Content="History" HorizontalAlignment="Left" Margin="342,18,0,0" VerticalAlignment="Top" Width="144"/>
+        <TextBlock Text="{Binding LabelText}" HorizontalAlignment="Left" Margin="67,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <Button Content="{Binding LabelText}" HorizontalAlignment="Left" Margin="67,227,0,0" VerticalAlignment="Top" Width="154"/>
+
+    </Grid>
+</Window>
