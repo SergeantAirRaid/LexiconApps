@@ -9,7 +9,7 @@ namespace LexiconToolset
             try
             {
                 var q = FileManagement.FileManagement.GetAllFiles("D:\\Libraries\\Pictures\\", true);
-                var o = FileManagement.FileManagement.GetAllExtensions(q);
+                var o = FileManagement.FileManagement.GetAllExtensions(q.Item1);
             }
             catch { }
         }

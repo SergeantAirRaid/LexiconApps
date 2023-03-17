@@ -15,7 +15,7 @@ namespace FileManagement
 
             var files = GetAllFilesInternal(directory, includeSubfolders);
 
-            return GetAllExtensions(files);
+            return GetAllExtensions(files.Item1);
         }
 
         public static Dictionary<string, int> GetAllExtensions(List<FileInfo> files)
@@ -38,27 +38,29 @@ namespace FileManagement
         }
 
         /// <summary>
-        /// Gets a list of FileInfo objects associated with all files in the provided directory, with or without considering subdirectories.
+        /// Gets a list of FileInfo objects associated with all files in the provided directory and their total size, with 
+        /// or without considering subdirectories.
         /// </summary>
         /// <param name="directory">The directory to get file info from.</param>
         /// <param name="includeSubfolders">Whether or not to get info from files contained in subdirectories as well.</param>
-        /// <returns></returns>
-        public static List<FileInfo> GetAllFiles(string directory, bool includeSubfolders = true)
+        /// <returns>A tuple containing the list of FileInfo objects, and their total size on disk.</returns>
+        public static (List<FileInfo>, long) GetAllFiles(string directory, bool includeSubfolders = true)
         {
             _Loggy.LogInfo("Beginning GetAllFiles at directory " + directory);
 
             var files = GetAllFilesInternal(directory, includeSubfolders);
 
-            _Loggy.LogInfo("Completed GetAllFiles. Files found: " + files.Count);
+            _Loggy.LogInfo("Completed GetAllFiles. " + files.Item1.Count + " files found, totaling " + files.Item2 + " bytes.");
             _Loggy.Spacer();
 
             return files;
         }
 
         // Recursive internal method called by GetAllFiles. Wrapped by GetAllFiles for logging.
-        private static List<FileInfo> GetAllFilesInternal(string directory, bool includeSubfolders = true)
+        private static (List<FileInfo>, long) GetAllFilesInternal(string directory, bool includeSubfolders = true)
         {
             var files = new List<FileInfo>();
+            long size = 0;
 
             // Check that we can even get anything out of this directory.
             directory = directory.Trim('\\');
@@ -69,7 +71,7 @@ namespace FileManagement
                 // failure shouldn't stop the whole process - just log the failure and proceed.
                 var message = "Directory " + directory + " doesn't exist, was inaccessible, or isn't a valid directory.";
                 _Loggy.LogError(message);
-                return new List<FileInfo>();
+                return (new List<FileInfo>(), 0);
             }
 
             // Next, get the files in the provided directory.
@@ -80,14 +82,16 @@ namespace FileManagement
 
                 foreach (var file in tempFiles)
                 {
-                    files.Add(new FileInfo(file));
+                    var data = new FileInfo(file);
+                    files.Add(data);
+                    size += data.Length;
                     _Loggy.LogDebug("File Found: " + file);
                 }
             }
             catch(Exception ex)
             {
                 _Loggy.LogError("Error with Dir " + directory + ", exception: " + ex.Message);
-                return new List<FileInfo>();
+                return (new List<FileInfo>(), 0);
             }
 
             // Finally, check the directory's subfolders, if the user provided that we should.
@@ -99,17 +103,19 @@ namespace FileManagement
 
                     foreach (var dir in dirs)
                     {
-                        files.AddRange(GetAllFilesInternal(dir, includeSubfolders));
+                        var data = GetAllFilesInternal(dir, includeSubfolders);
+                        files.AddRange(data.Item1);
+                        size += data.Item2;
                     }
                 }
                 catch (Exception ex)
                 {
                     _Loggy.LogError("Error with Dir " + directory + ", exception: " + ex.Message);
-                    return new List<FileInfo>();
+                    return (new List<FileInfo>(), 0);
                 }
             }
 
-            return files;
+            return (files, size);
         }
 
 
