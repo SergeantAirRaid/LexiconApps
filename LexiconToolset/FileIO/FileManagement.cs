@@ -5,10 +5,8 @@ using System.Linq;
 
 namespace LexiTools
 {
-    public static partial class FileManagement
+    public static partial class FileIO
     {
-        private static Logger _Loggy = new Logger(Logger.LoggerSeverity.Info);
-
         public static Dictionary<string, int> GetAllExtensions(string directory, bool includeSubfolders = true)
         {
             _Loggy.LogInfo("Beginning GetAllExtensions at directory " + directory);
@@ -25,10 +23,11 @@ namespace LexiTools
             Dictionary<string, int> extensions = new Dictionary<string, int>();
             foreach (var file in files)
             {
-                if (extensions.ContainsKey(file.Extension))
-                    extensions[file.Extension]++;
+                string extension = file.Extension.ToLower();
+                if (extensions.ContainsKey(extension))
+                    extensions[extension]++;
                 else
-                    extensions.Add(file.Extension, 1);
+                    extensions.Add(extension, 1);
             }
 
             _Loggy.LogInfo("Completed GetAllExtensions. Extensions found: " + extensions.Count);
@@ -88,7 +87,7 @@ namespace LexiTools
                     _Loggy.LogDebug("File Found: " + file);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _Loggy.LogError("Error with Dir " + directory + ", exception: " + ex.Message);
                 return (new List<FileInfo>(), 0);
@@ -116,118 +115,6 @@ namespace LexiTools
             }
 
             return (files, size);
-        }
-
-
-
-
-
-        public enum FileIOSortMethod
-        {
-            NoSort,
-            YearMonth,
-            FileExtension
-        }
-
-        public enum FileIODuplicationOption
-        {
-            Rename,
-            Overwrite,
-            Ignore,
-            DuplicationDir
-        }
-
-        public static bool CopyTo(string sourceFileName, string destination, FileIOSortMethod method = FileIOSortMethod.NoSort, FileIODuplicationOption duplication = FileIODuplicationOption.Rename)
-        {
-            // Check if provided destination includes the filename or not.
-
-
-            if (Directory.Exists(destination))
-            {
-
-            }
-            else
-            {
-
-            }
-
-            //if (File.Exists(destFileName))
-            //{
-            //    if (overwrite)
-            //    {
-            //        File.Delete(destFileName);
-            //    }
-            //    else
-            //    {
-            //        bool fileRenamed = false;
-            //        do
-            //        {
-            //            var piecesOfDest = destFileName.Split('.');
-            //            piecesOfDest[piecesOfDest.Length - 2] += " (copy)";
-            //            destFileName = "";
-
-            //            foreach (var piece in piecesOfDest)
-            //            {
-            //                destFileName += piece + ".";
-            //            }
-
-            //            destFileName = destFileName.Trim('.');
-
-            //            if (!File.Exists(destFileName)) fileRenamed = true;
-            //        }
-            //        while (!fileRenamed);
-            //    }
-            //}
-
-            return true;
-        }
-
-
-
-        public static bool Move(string sourceFileName, string destFileName, bool overwrite = false)
-        {
-            try
-            {
-                if (File.Exists(destFileName))
-                {
-                    if (overwrite)
-                    {
-                        File.Delete(destFileName);
-                    }
-                    else
-                    {
-                        bool fileRenamed = false;
-                        do
-                        {
-                            var piecesOfDest = destFileName.Split('.');
-                            piecesOfDest[piecesOfDest.Length - 2] += " (copy)";
-                            destFileName = "";
-
-                            foreach (var piece in piecesOfDest)
-                            {
-                                destFileName += piece + ".";
-                            }
-
-                            destFileName = destFileName.Trim('.');
-
-                            if (!File.Exists(destFileName)) fileRenamed = true;
-                        }
-                        while (!fileRenamed);
-                    }
-                }
-
-                var actualCreationDate = File.GetCreationTime(sourceFileName);
-
-                File.Move(sourceFileName, destFileName);
-
-                File.SetCreationTime(destFileName, actualCreationDate);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
         }
     }
 }
