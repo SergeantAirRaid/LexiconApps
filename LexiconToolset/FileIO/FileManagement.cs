@@ -62,7 +62,7 @@ namespace LexiTools
             long size = 0;
 
             // Check that we can even get anything out of this directory.
-            directory = directory.Trim('\\');
+            //directory = directory.Trim('\\');
             var dirInfo = new DirectoryInfo(directory);
             if (!dirInfo.Exists)
             {
@@ -75,6 +75,8 @@ namespace LexiTools
 
             // Next, get the files in the provided directory.
             _Loggy.LogInfo("Processing directory " + dirInfo.FullName);
+            DirectoryProcessUpdate?.Invoke(directory, null);
+
             try
             {
                 var tempFiles = Directory.GetFiles(directory).ToList(); // Requires Linq
@@ -115,6 +117,12 @@ namespace LexiTools
             }
 
             return (files, size);
+        }
+    
+        private static string SanitizeFilepath(string path)
+        {
+            //string newPath = path.
+            return "";
         }
     }
 }

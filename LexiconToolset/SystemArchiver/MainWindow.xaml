@@ -5,9 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SystemArchiver"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="333,206,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        Title="File Archiver" Height="450" Width="800">
+    <Grid x:Name="mainGrid">
+        <Button x:Name="btnProcess" Content="Process" HorizontalAlignment="Left" Margin="108,85,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <TextBox x:Name="txtConsole" HorizontalAlignment="Left" Margin="10,177,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="212"/>
+        <TextBox x:Name="txtFilepath" HorizontalAlignment="Left" Margin="10,36,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="240"/>
+        <ProgressBar x:Name="barProgress" HorizontalAlignment="Left" Height="10" Margin="80,70,0,0" VerticalAlignment="Top" Width="100" IsIndeterminate="True" Visibility="Hidden"/>
+        <Label Content="File path to archive:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="Archive destination:" HorizontalAlignment="Left" Margin="292,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtArchivepath" HorizontalAlignment="Left" Margin="292,36,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="240"/>
+        <Rectangle HorizontalAlignment="Left" Height="376" Margin="272,23,0,0" Stroke="LightGray" VerticalAlignment="Top" Width="1"/>
 
     </Grid>
 </Window>

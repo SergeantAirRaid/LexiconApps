@@ -8,6 +8,8 @@ namespace LexiTools
     {
         private static Logger _Loggy = new Logger(Logger.LoggerSeverity.Info);
 
+        public static event EventHandler DirectoryProcessUpdate;
+
         public enum DuplicateFileLogic
         {
             Ignore,             // File will not be copied.
